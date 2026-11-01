@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0e14">
+<meta name="description" content="BHAGAT OPERATOR MATRIX - F&O market scanner dashboard">
+<link rel="manifest" href="manifest.webmanifest">
+<title>BHAGAT OPERATOR MATRIX v6.1</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0e14;--panel:#121826;--muted:#91a0b5;--line:#263244;--green:#10b981;--red:#ef4444;--amber:#f59e0b;--blue:#38bdf8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#e1e7ef;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:84px}
+header{position:sticky;top:0;z-index:5;background:#101725ed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#10b981,#2dd4bf);color:#06120e;display:grid;place-items:center;font-size:23px;font-weight:900}.brand h1{font-size:15px;margin:0;letter-spacing:1px}.brand small{color:var(--muted);font-size:10px;letter-spacing:.7px}.pill{font-size:10px;color:#6ee7b7;background:#064e3b66;border:1px solid #059669;padding:3px 7px;border-radius:6px}
+button,select{font:inherit}.iconbtn,.tab,.filter{border:1px solid var(--line);background:#182233;color:#dbe5f2;border-radius:10px;padding:9px 12px}.iconbtn{width:40px;height:40px}
+.wrap{padding:14px;max-width:900px;margin:auto}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.panel,.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px}.panel .label{font-size:11px;color:var(--muted)}.price{font-size:21px;font-weight:800;margin:5px 0}.sub{font-size:11px;color:var(--muted)}.green{color:#34d399}.red{color:#fb7185}.amber{color:#fbbf24}.blue{color:#7dd3fc}
+.notice{margin-top:12px;padding:11px 12px;border:1px solid #854d0e;background:#42200655;border-radius:11px;font-size:12px;color:#fcd34d;line-height:1.5}
+.filters{display:flex;gap:8px;overflow:auto;padding:14px 0 10px}.filter{white-space:nowrap;font-size:12px}.filter.active{background:#10b981;color:#04130d;border-color:#10b981;font-weight:800}
+.cards{display:grid;gap:10px}.card{border-left:4px solid var(--green)}.card.SHORT{border-left-color:var(--red)}.card.COVERING{border-left-color:var(--amber)}.card.UNWINDING{border-left-color:#818cf8}
+.cardtop{display:flex;justify-content:space-between;gap:8px}.symbol{font-weight:850;letter-spacing:.5px}.name{font-size:11px;color:var(--muted);margin-top:3px}.tag{font-size:9px;border:1px solid var(--line);padding:4px 7px;border-radius:6px;color:#cbd5e1;display:inline-block;margin-top:7px}.stockprice{text-align:right;font-weight:800}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;background:#0b111c;border-radius:9px;padding:9px;text-align:center}.metrics small{display:block;color:var(--muted);font-size:9px}.metrics b{font-size:12px;display:block;margin-top:4px}
+.sectiontitle{font-size:13px;font-weight:800;margin:18px 0 9px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.status{font-size:11px;padding:4px 8px;border-radius:7px;background:#422006;color:#fcd34d}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#101725f2;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 6px calc(9px + env(safe-area-inset-bottom));z-index:6}.tab{background:transparent;border:0;color:var(--muted);font-size:11px;display:grid;gap:3px;justify-items:center}.tab.active{color:#34d399}
+.view{display:none}.view.active{display:block}
+input{background:#0b111c;border:1px solid var(--line);color:#e1e7ef;padding:10px;border-radius:9px;width:100%;margin:6px 0 12px}
+.primary{background:#059669;color:white;border:0;border-radius:9px;padding:11px 14px;font-weight:700;width:100%}
+.muted{font-size:11px;color:var(--muted);line-height:1.55}
+@media(min-width:650px){.cards{grid-template-columns:1fr 1fr}.wrap{padding:20px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="logo">ϟ</div><div><h1>BHAGAT MATRIX <span class="pill">v6.1</span></h1><small>F&O SCALPING DASHBOARD</small></div></div>
+ <button class="iconbtn" id="soundBtn" aria-label="Toggle sound">🔔</button>
+</header>
+<main class="wrap">
+ <section id="matrix" class="view active">
+  <div class="grid2">
+   <div class="panel"><div class="row"><span class="label">NIFTY 50</span><span class="status" id="niftyStatus">DEMO</span></div><div class="price" id="niftyPrice">—</div><div class="sub" id="niftyChange">Live feed not connected</div></div>
+   <div class="panel"><div class="row"><span class="label">BANK NIFTY</span><span class="status" id="bankStatus">DEMO</span></div><div class="price" id="bankPrice">—</div><div class="sub" id="bankChange">Live feed not connected</div></div>
+  </div>
+  <div class="notice"><b>DATA STATUS:</b> Demo/sample values only. यह ऐप अभी NSE Live Data से कनेक्ट नहीं है। वास्तविक भाव दिखाने के लिए अधिकृत API और सुरक्षित backend जोड़ना होगा।</div>
+  <div class="filters" id="filters">
+   <button class="filter active" data-filter="ALL">🔥 All High-Movers</button>
+   <button class="filter" data-filter="LONG">🚀 Long Buildup</button>
+   <button class="filter" data-filter="COVERING">⚡ Short Covering</button>
+   <button class="filter" data-filter="SHORT">🔻 Short Buildup</button>
+   <button class="filter" data-filter="UNWINDING">↘ Long Unwinding</button>
+  </div>
+  <div class="row"><div class="sectiontitle">Market Watchlist</div><span class="sub" id="count">4 stocks</span></div>
+  <div class="cards" id="stockFeed"></div>
+ </section>
+ <section id="rules" class="view">
+  <div class="sectiontitle">Signal Rules</div>
+  <div class="panel">
+   <p><b>Long Buildup</b><br><span class="muted">Price ↑ + Open Interest ↑</span></p>
+   <p><b>Short Buildup</b><br><span class="muted">Price ↓ + Open Interest ↑</span></p>
+   <p><b>Short Covering</b><br><span class="muted">Price ↑ + Open Interest ↓</span></p>
+   <p><b>Long Unwinding</b><br><span class="muted">Price ↓ + Open Interest ↓</span></p>
+   <p class="muted">इन वर्गों के लिए वास्तविक OI data feed आवश्यक है। केवल कीमत और volume से OI buildup की पुष्टि नहीं की जा सकती।</p>
+  </div>
+ </section>
+ <section id="settings" class="view">
+  <div class="sectiontitle">Connection & Settings</div>
+  <div class="panel">
+   <div class="row"><b>Dhan Live API</b><span class="status">Not connected</span></div>
+   <p class="muted">API credentials इस HTML/मोबाइल ऐप में सीधे न डालें। उन्हें सुरक्षित server/backend में रखना होगा।</p>
+   <label class="muted" for="backend">Backend WebSocket URL (developer setup)</label>
+   <input id="backend" placeholder="wss://your-secure-backend.example/ws">
+   <button class="primary" id="saveBackend">Save endpoint</button>
+   <p class="muted" id="saveMsg">Endpoint अभी configure नहीं है। URL save करने से अपने-आप data connect नहीं होगा; backend implementation भी चाहिए।</p>
+  </div>
+  <div class="panel" style="margin-top:10px"><b>App information</b><p class="muted">BHAGAT OPERATOR MATRIX v6.1 · Installable PWA starter. इसे HTTPS hosting पर डालने के बाद Android Chrome के “Add to Home screen” से install किया जा सकता है।</p></div>
+ </section>
+</main>
+<nav class="bottom">
+ <button class="tab active" data-view="matrix">⚡<span>Matrix</span></button>
+ <button class="tab" data-view="rules">⌁<span>Rules</span></button>
+ <button class="tab" data-view="settings">⚙<span>Settings</span></button>
+</nav>
+<script>
+const stocks=[
+ {symbol:"RELIANCE",name:"Reliance Industries",price:"—",change:"—",vol:"—",oi:"—",cat:"LONG",tag:"SAMPLE · LONG BUILDUP"},
+ {symbol:"TATASTEEL",name:"Tata Steel Ltd.",price:"—",change:"—",vol:"—",oi:"—",cat:"COVERING",tag:"SAMPLE · SHORT COVERING"},
+ {symbol:"ICICIBANK",name:"ICICI Bank Ltd.",price:"—",change:"—",vol:"—",oi:"—",cat:"LONG",tag:"SAMPLE · LONG BUILDUP"},
+ {symbol:"MARUTI",name:"Maruti Suzuki India",price:"—",change:"—",vol:"—",oi:"—",cat:"SHORT",tag:"SAMPLE · SHORT BUILDUP"}
+];
+let activeFilter="ALL",soundOn=true;
+function render(){
+ const list=activeFilter==="ALL"?stocks:stocks.filter(s=>s.cat===activeFilter);
+ document.getElementById("count").textContent=list.length+" stocks";
+ document.getElementById("stockFeed").innerHTML=list.length?list.map(s=>`
+ <article class="card ${s.cat}">
+  <div class="cardtop"><div><div class="symbol">${s.symbol}</div><div class="name">${s.name}</div><span class="tag">${s.tag}</span></div><div class="stockprice"><div>${s.price}</div><div class="${s.cat==='SHORT'?'red':'green'}" style="font-size:11px">${s.change}</div></div></div>
+  <div class="metrics"><div><small>5M MOVE</small><b>${s.change}</b></div><div><small>VOL SPIKE</small><b class="amber">${s.vol}</b></div><div><small>OI CHANGE</small><b class="blue">${s.oi}</b></div></div>
+ </article>`).join(""):'<div class="panel muted">इस श्रेणी में अभी कोई sample stock नहीं है।</div>';
+}
+document.querySelectorAll(".filter").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");activeFilter=b.dataset.filter;render()}));
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.getElementById(b.dataset.view).classList.add("active")}));
+document.getElementById("soundBtn").addEventListener("click",e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?"🔔":"🔕";e.currentTarget.title=soundOn?"Sound preference on":"Sound preference off"});
+document.getElementById("saveBackend").addEventListener("click",()=>{const v=document.getElementById("backend").value.trim();document.getElementById("saveMsg").textContent=v?"Endpoint saved in this page session. Backend connection is not yet implemented.":"Please enter a secure WebSocket endpoint.";});
+render();
+if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script>
+</body></html>
